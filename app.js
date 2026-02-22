@@ -7,7 +7,6 @@
 // Select the status display element from the DOM.
 // We'll use this to display messages to the user.
 const statusDisplay = document.querySelector(".game--status");
-const gameEnd = document.querySelector(".game--end");
 
 // Set initial game state values
 let gameActive = true; // This keeps track of whether the game is active or has ended
@@ -53,9 +52,13 @@ function handlePlayerChange() {
   // Update the status text to reflect the new player's turn
   if(currentPlayer === "X" && gameActive === true){
     currentPlayer = "O";
+    statusDisplay.innerHTML = currentPlayerTurn();
   }else if (gameActive === true){
     currentPlayer = "X";
+    statusDisplay.innerHTML = currentPlayerTurn();
   }
+
+  
 
 }
 
@@ -68,17 +71,16 @@ function handlePlayerChange() {
  * Otherwise, switch players.
  */
 function handleResultValidation() {
-  let roundWon = false;
 
   // Iterate through each winning condition
   for (let i=0; i<winningConditions.length; i++){
     let arr = winningConditions[i];
-    console.log("Looping");
+    //console.log("Looping");
 
     if(currentPlayer === gameState[arr[0]] && currentPlayer === gameState[arr[1]] && currentPlayer === gameState[arr[2]]){
-      roundWon = true;
       gameActive = false;
-      console.log("YOU WIN");
+      statusDisplay.innerHTML = `${currentPlayer} Wins!`;
+      winCounter();
       break;
     }
 
@@ -100,9 +102,10 @@ function handleResultValidation() {
     }
   }
 
-  if (count === 9){
+  if (count === 9 && gameActive===true){
     gameActive = false;
-    console.log("Draw");
+    statusDisplay.innerHTML = `Draw!`;
+    winCounter();
   }
 
   // If the game is neither won nor drawn, switch to the next player
@@ -154,7 +157,6 @@ function handleRestartGame() {
   currentPlayer = "X";
   gameState = ["", "", "", "", "", "", "", "", ""];
   statusDisplay.innerHTML = currentPlayerTurn();
-  console.log("Game Restarted");
 
   // Clear each cell in the UI
   cells.forEach(cell => {
@@ -171,3 +173,38 @@ cells.forEach(cell => {
 // Add event listener to the restart button
 const restart = document.querySelector(".game--restart");
 restart.addEventListener("click", handleRestartGame);
+
+//reset score button
+const resetScore  =document.querySelector(".game--resetScore");
+resetScore.addEventListener("click", resetGameScore);
+
+// Win \ Draw counter
+  let xWins = 0;
+  let oWins = 0;
+  let draw = 0;
+  const winsText = document.querySelector(".game--counter");
+
+function winCounter(){
+  if (statusDisplay.innerHTML === 'X Wins!'){
+    xWins++;
+    document.getElementById("xWins").textContent = `X Wins: ${xWins}`;
+  }else if(statusDisplay.innerHTML === 'Draw!'){
+    draw++;
+    document.getElementById("draws").textContent = `Draw: ${draw}`;
+  }else{
+    oWins++;
+    document.getElementById("oWins").textContent = `Draw: ${oWins}`;
+  }
+
+}
+
+function resetGameScore(){
+  xWins = 0;
+  oWins = 0;
+  draw = 0;
+  document.getElementById("xWins").textContent = `X Wins: ${xWins}`;
+  document.getElementById("draws").textContent = `Draw: ${draw}`;
+  document.getElementById("oWins").textContent = `Draw: ${oWins}`;
+  
+
+}

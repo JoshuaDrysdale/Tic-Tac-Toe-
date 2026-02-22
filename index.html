@@ -13,7 +13,6 @@
   <body>
     <section>
       <h1 class="game--title">Tic Tac Toe</h1>
-      <h2 class="game--end"></h2>
       <div class="game--container">
         <div data-cell-index="0" class="cell"></div>
         <div data-cell-index="1" class="cell"></div>
@@ -25,8 +24,16 @@
         <div data-cell-index="7" class="cell"></div>
         <div data-cell-index="8" class="cell"></div>
       </div>
-      <h3 class="game--status"></h3>
+      <h2 class="game--status"></h2>
       <button class="game--restart">Restart Game</button>
+
+      <h3 class="game--counter">
+        <span id="xWins">X Wins: 0</span>
+        <span id="draws">Draw: 0</span>
+        <span id="oWins">O Wins: 0</span>
+      </h3>
+
+      <button class="game--resetScore">Reset Score</button>
     </section>
 
     <script src="app.js"></script>
